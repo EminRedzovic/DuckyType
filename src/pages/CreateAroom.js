@@ -1,7 +1,12 @@
 import React from "react";
+import Layout from "../containers/Layout";
 
 const CreateAroom = () => {
-  return <div>Coming soon</div>;
+  return (
+    <Layout>
+      <div>Soon</div>
+    </Layout>
+  );
 };
 
 export default CreateAroom;
