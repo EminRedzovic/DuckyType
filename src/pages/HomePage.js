@@ -9,11 +9,9 @@ import Layout from "../containers/Layout";
 function HomePage() {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 950);
-    setIsMenuOpen(false);
   };
 
   useEffect(() => {
@@ -61,6 +59,9 @@ function HomePage() {
                 variant="contained"
                 color="success"
                 sx={{ margin: "10px" }}
+                onClick={() => {
+                  navigate("/practice");
+                }}
               >
                 Practice
               </Button>

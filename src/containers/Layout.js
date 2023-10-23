@@ -120,6 +120,7 @@ const Layout = (props) => {
           </Box>
         )}
       </div>
+      <Divider></Divider>
       <Box>{props.children}</Box>
     </>
   );
