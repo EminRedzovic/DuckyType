@@ -8,11 +8,11 @@ import Layout from "../containers/Layout";
 
 function HomePage() {
   const navigate = useNavigate();
-  // const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
-
-  // const handleResize = () => {
-  //   setIsMobile(window.innerWidth <= 950);
-  // };
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
+  console.log(isMobile);
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 950);
+  };
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
