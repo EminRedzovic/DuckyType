@@ -45,9 +45,13 @@ const Layout = (props) => {
             }}
           >
             <Box
+              onClick={() => {
+                navigate("/");
+              }}
               sx={{
                 display: "flex",
                 alignItems: "center ",
+                cursor: "pointer",
               }}
             >
               <img

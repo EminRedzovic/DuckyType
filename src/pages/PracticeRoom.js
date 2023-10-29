@@ -9,10 +9,10 @@ const PracticeRoom = () => {
     "Do in laughter securing smallest sensible no mr hastened. As perhaps proceed in in brandon of limited unknown greatly. Distrusts fulfilled happiness unwilling as explained of difficult. No landlord of peculiar ladyship attended if contempt ecstatic. Loud wish made on is am as hard. Court so avoid in plate hence. Of received mr breeding concerns peculiar securing landlord. Spot to many it four bred soon well to. Or am promotion in no departure abilities.",
   ];
   const [words, setWords] = useState(50);
-  const data2 = ["5", "15", "25", "50"];
+  const data2 = ["5", "10", "25", "50"];
   const text = mock[0].split(" ").slice(0, words);
   const [input, setInput] = useState("");
-  const [data] = useState([0, 0]);
+  const [data, setData] = useState([0, 0]);
   const [timer, setTimer] = useState(false);
   const [counter, setCounter] = useState(0);
 
@@ -29,7 +29,11 @@ const PracticeRoom = () => {
     }
     // eslint-disable-next-line
   }, [timer]);
-  const handleReset = () => {};
+  const handleReset = () => {
+    setData([0, 0]);
+    setTimer(false);
+    setCounter(0);
+  };
   const handleSpace = (e) => {
     if (e.keyCode === 32 && input.length >= 2) {
       const textData = document.getElementById(data[0]);
@@ -78,7 +82,7 @@ const PracticeRoom = () => {
           </Box>
           <Box>
             <Typography sx={{ padding: "5px" }}>
-              Your best attempt : 102wpm
+              Your best attempt : 102wpm //MOCKED
             </Typography>
           </Box>
         </Box>
@@ -86,8 +90,10 @@ const PracticeRoom = () => {
           {data[0] === text.length ? (
             <>
               <center>
-                <Typography variant="h1">
-                  {((60 / counter) * data[1]).toFixed(1)}
+                <Typography variant="h2">
+                  Wpm: {((60 / counter) * data[1]).toFixed(1)}
+                  <br />
+                  Accuracy: {((data[1] / words) * 100).toFixed(1)}%
                 </Typography>
                 <Button variant="outlined" onClick={handleReset}>
                   Reset
