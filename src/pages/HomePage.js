@@ -9,7 +9,8 @@ import { getBoardData } from "../firebase";
 
 function HomePage() {
   const navigate = useNavigate();
-  const [setIsMobile] = useState(window.innerWidth <= 950);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
+  console.log(isMobile);
   // const [boardData, setboardData] = useState("");
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 950);

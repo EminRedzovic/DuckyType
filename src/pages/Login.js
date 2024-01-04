@@ -3,7 +3,8 @@ import Layout from "../containers/Layout";
 import { auth } from "../firebase";
 
 const Login = () => {
-  const [setUser] = useState({});
+  const [user, setUser] = useState({});
+  console.log(user);
   const [isLoading, SetisLoading] = useState(false);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
