@@ -48,3 +48,17 @@
 .main {
   /* background-color: #f8fab9; */
 }
+.nav-button {
+  margin-right: 20px;
+  color: white !important;
+}
+.container {
+  height: 80vh;
+  padding-top: 100px;
+  background: linear-gradient(
+    90deg,
+    rgba(250, 231, 54, 1) 0%,
+    rgba(255, 240, 106, 1) 50%,
+    rgba(254, 242, 132, 1) 100%
+  );
+}

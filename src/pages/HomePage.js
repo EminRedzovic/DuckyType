@@ -5,14 +5,26 @@ import { useNavigate } from "react-router-dom";
 import mock from "../mock.json";
 import duck from "../assets/duck.png";
 import Layout from "../containers/Layout";
+import { getBoardData } from "../firebase";
 
 function HomePage() {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
-  console.log(isMobile);
+  const [boardData, setboardData] = useState("");
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 950);
   };
+  const loadData = async () => {
+    try {
+      const boardData = await getBoardData();
+      console.log(boardData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);

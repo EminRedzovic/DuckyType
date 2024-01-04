@@ -40,7 +40,7 @@ const PracticeRoom = () => {
       console.log(counter, data);
       if (text[data[0]] === input) {
         console.log(counter);
-        textData.style.color = "green";
+        textData.style.color = "white";
         data[0] = data[0] + 1;
         data[1]++;
         setInput("");

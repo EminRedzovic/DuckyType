@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../style/style.css";
 import {
   AppBar,
@@ -7,16 +7,24 @@ import {
   Button,
   Box,
   Divider,
+  Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "../assets/logo.png";
 import duck from "../assets/duck.png";
 import { useNavigate } from "react-router-dom";
+import { auth, logout } from "../firebase";
 const Layout = (props) => {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+  }, []);
+  console.log(user);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -75,19 +83,15 @@ const Layout = (props) => {
             ) : (
               <Box display="flex" sx={{ paddingRight: "30px" }}>
                 <Button
-                  sx={{ paddingRight: "20px", color: "white" }}
+                  className="nav-button"
                   onClick={() => {
                     navigate("/");
                   }}
                 >
                   Home
                 </Button>
-                <Button sx={{ paddingRight: "20px", color: "white" }}>
-                  About us
-                </Button>
-                <Button sx={{ paddingRight: "20px", color: "white" }}>
-                  Updates
-                </Button>
+                <Button className="nav-button">About us</Button>
+                <Button className="nav-button">Updates</Button>
                 <div
                   style={{
                     width: "1px",
@@ -96,12 +100,23 @@ const Layout = (props) => {
                     margin: "0px 10px 0px 10px",
                   }}
                 ></div>
-                <Button sx={{ paddingRight: "20px", color: "white" }}>
-                  Sign in
-                </Button>
-                <Button sx={{ paddingRight: "20px", color: "white" }}>
-                  0 Races
-                </Button>
+                {user ? (
+                  <Button className="nav-button" onClick={logout}>
+                    Logout
+                  </Button>
+                ) : (
+                  <Button
+                    className="nav-button"
+                    onClick={() => {
+                      navigate("/register");
+                    }}
+                  >
+                    Sign in
+                  </Button>
+                )}
+
+                <Button className="nav-button">0 Races</Button>
+                {user && <Typography>{user.displayName}</Typography>}
               </Box>
             )}
           </Toolbar>
