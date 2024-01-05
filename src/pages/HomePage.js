@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../style/style.css";
-import { Typography, Button, Box } from "@mui/material";
+import { Typography, Button, Box, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import mock from "../mock.json";
 import duck from "../assets/duck.png";
 import Layout from "../containers/Layout";
 import { getBoardData } from "../firebase";
 
 function HomePage() {
+  const [data, setData] = useState([]);
+
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
   console.log(isMobile);
@@ -18,11 +19,12 @@ function HomePage() {
   const loadData = async () => {
     try {
       const boardData = await getBoardData();
-      console.log(boardData);
+      setData(boardData);
     } catch (error) {
       console.error(error);
     }
   };
+  useEffect(() => {}, []);
   useEffect(() => {
     loadData();
   }, []);
@@ -92,16 +94,27 @@ function HomePage() {
           </Box>
           <Box className="div2">
             <center>
-              <Typography variant="h5">Leaderboard</Typography>
+              <Typography variant="h4">Leaderboard</Typography>
             </center>
             <Box>
-              {mock.map((item) => {
-                return (
-                  <Typography sx={{ marginTop: "5px", marginLeft: "5px" }}>
-                    {item.name} - {(item.time / 60).toFixed(1)}min
-                  </Typography>
-                );
-              })}
+              {data && data.length > 0 ? (
+                data.map((item) => {
+                  return (
+                    <center>
+                      <Typography
+                        variant="h5"
+                        sx={{ marginTop: "5px", marginLeft: "5px" }}
+                      >
+                        {item.username} - {item.wpm} - {item.accuracy}
+                      </Typography>
+                    </center>
+                  );
+                })
+              ) : (
+                <center>
+                  <CircularProgress />
+                </center>
+              )}
             </Box>
           </Box>
         </Box>

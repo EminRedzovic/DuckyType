@@ -1,5 +1,4 @@
 import "../style/style.css";
-
 import React, { useEffect, useState } from "react";
 import Layout from "../containers/Layout";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -33,7 +32,6 @@ const registerSchema = yup.object({
 
 const Register = () => {
   const [user, setUser] = useState({});
-  const [isAvilable, setIsAvilable] = useState();
   const [isLoading, SetisLoading] = useState(false);
   const navigate = useNavigate("");
   const auth = getAuth();
@@ -50,30 +48,16 @@ const Register = () => {
 
   const signIn = async (values) => {
     try {
-      const avilable = await isUsernameAvailable(values.displayName);
-      setIsAvilable(avilable);
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
+      const data = {
+        displayName: values.displayName,
+        email: values.email,
+        isAdmin: values.isAdmin,
+      };
+      await submitLoginData(data);
+      navigate("/");
     } catch (error) {
-      console.log(error);
-    }
-    if (isAvilable) {
-      try {
-        await createUserWithEmailAndPassword(
-          auth,
-          values.email,
-          values.password
-        );
-        const data = {
-          displayName: values.displayName,
-          email: values.email,
-          isAdmin: values.isAdmin,
-        };
-        await submitLoginData(data);
-        navigate("/");
-      } catch (error) {
-        alert(error);
-      }
-    } else {
-      alert("Username is already taken!");
+      alert(error);
     }
   };
   if (!user) {
@@ -87,8 +71,17 @@ const Register = () => {
               password: "",
               isAdmin: false,
             }}
-            onSubmit={(values, actions) => {
-              signIn(values);
+            onSubmit={async (values, actions) => {
+              try {
+                const avilable = await isUsernameAvailable(values.displayName);
+                if (avilable) {
+                  await signIn(values);
+                } else {
+                  alert("Username is already taken");
+                }
+              } catch (error) {
+                console.log(error);
+              }
             }}
             validationSchema={registerSchema}
           >

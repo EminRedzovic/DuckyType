@@ -108,7 +108,7 @@ const Layout = (props) => {
                   <Button
                     className="nav-button"
                     onClick={() => {
-                      navigate("/register");
+                      navigate("/login");
                     }}
                   >
                     Sign in

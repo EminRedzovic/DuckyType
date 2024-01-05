@@ -15,7 +15,6 @@ const PracticeRoom = () => {
   const [data, setData] = useState([0, 0]);
   const [timer, setTimer] = useState(false);
   const [counter, setCounter] = useState(0);
-
   useEffect(() => {
     if (timer === true) {
       const interval = setInterval(() => {
@@ -37,9 +36,8 @@ const PracticeRoom = () => {
   const handleSpace = (e) => {
     if (e.keyCode === 32 && input.length >= 2) {
       const textData = document.getElementById(data[0]);
-      console.log(counter, data);
+
       if (text[data[0]] === input) {
-        console.log(counter);
         textData.style.color = "white";
         data[0] = data[0] + 1;
         data[1]++;
@@ -90,7 +88,7 @@ const PracticeRoom = () => {
           {data[0] === text.length ? (
             <>
               <center>
-                <Typography variant="h2">
+                <Typography variant="h4">
                   Wpm: {((60 / counter) * data[1]).toFixed(1)}
                   <br />
                   Accuracy: {((data[1] / words) * 100).toFixed(1)}%
@@ -98,6 +96,8 @@ const PracticeRoom = () => {
                 <Button variant="outlined" onClick={handleReset}>
                   Reset
                 </Button>
+                <Typography variant="h3">Submit ur result</Typography>
+                <Button variant="outlined">Submit</Button>
               </center>
             </>
           ) : (

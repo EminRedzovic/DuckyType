@@ -10,13 +10,29 @@ import {
 } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC9fV26pfRrw-0lwOOaaUgplYXse8Ftcok",
-  authDomain: "ducky-type.firebaseapp.com",
-  projectId: "ducky-type",
-  storageBucket: "ducky-type.appspot.com",
-  messagingSenderId: "1078686550374",
-  appId: "1:1078686550374:web:dac25dcec18a7b411960a7",
-  measurementId: "G-0Y2ZSBJ9FP",
+  // apiKey: "AIzaSyC9fV26pfRrw-0lwOOaaUgplYXse8Ftcok",
+  // authDomain: "ducky-type.firebaseapp.com",
+  // projectId: "ducky-type",
+  // storageBucket: "ducky-type.appspot.com",
+  // messagingSenderId: "1078686550374",
+  // appId: "1:1078686550374:web:dac25dcec18a7b411960a7",
+  // measurementId: "G-0Y2ZSBJ9FP",
+
+  // REACT_APP_FIREBASE_API_KEY=AIzaSyC9fV26pfRrw-0lwOOaaUgplYXse8Ftcok
+  // REACT_APP_FIREBASE_AUTH_DOMAIN=ducky-type.firebaseapp.com
+  // REACT_APP_FIREBASE_PROJECT_ID=ducky-type
+  // REACT_APP_FIREBASE_STORAGEBUCKET=ducky-type.appspot.com
+  // REACT_APP_FIREBASE_MESSAGINGSENDERID=1078686550374
+  // REACT_APP_FIREBASE_APPID= 1:1078686550374:web:dac25dcec18a7b411960a7
+  // REACT_APP_FIREBASE_MEASUREMENTID= G-0Y2ZSBJ9FP
+
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_FIREBASE_APPID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID,
 };
 
 // Initialize Firebase
@@ -50,18 +66,12 @@ export const submitLoginData = async (data) => {
 
 export const isUsernameAvailable = async (name) => {
   try {
-    // Dohvati referencu kolekcije korisnika iz Firebase Firestore
     const usersCollection = collection(db, "users");
-
-    // Napravi upit koji proverava da li postoji korisnik s istim korisničkim imenom
     const q = query(usersCollection, where("displayName", "==", name));
-
-    // Dohvati rezultate upita
     const querySnapshot = await getDocs(q);
-    console.log(querySnapshot.empty);
-    return querySnapshot.empty; // Ako je kolekcija prazna, korisničko ime je dostupno
+    return querySnapshot.empty;
   } catch (error) {
-    console.error("Greška pri proveri dostupnosti displayName:", error);
+    console.error(error);
     return false;
   }
 };
