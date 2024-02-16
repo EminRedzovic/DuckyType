@@ -15,7 +15,7 @@ const PracticeRoom = () => {
   const [data, setData] = useState({ currentIndex: 0, correctCount: 0 });
   const [timer, setTimer] = useState(false);
   const [counter, setCounter] = useState(0);
-  const [startTime, setStartTime] = useState(null);
+  const [setStartTime] = useState(null);
   useEffect(() => {
     if (timer === true) {
       const interval = setInterval(() => {
