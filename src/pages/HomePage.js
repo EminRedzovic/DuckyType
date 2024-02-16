@@ -8,7 +8,6 @@ import { getBoardData } from "../firebase";
 
 function HomePage() {
   const [data, setData] = useState([]);
-
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
   console.log(isMobile);
@@ -24,7 +23,6 @@ function HomePage() {
       console.error(error);
     }
   };
-  useEffect(() => {}, []);
   useEffect(() => {
     loadData();
   }, []);
@@ -40,58 +38,52 @@ function HomePage() {
     <Layout>
       <Box className="main-div">
         <Box className="wrapper">
-          <Box className="div">
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+          <Box className="card">
+            <Box className="image">
+              {" "}
               <img
                 src={duck}
                 alt="logo"
-                width="90px"
-                style={{ paddingLeft: "10px" }}
+                width="60px"
+                style={{ width: "100%" }}
               />
-              <Typography
-                variant="h5"
-                color="warning"
-                sx={{ textAlign: "center" }}
-              >
-                Duckytype - Practice your typing speed!
-              </Typography>
             </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                variant="contained"
-                color="success"
-                sx={{ margin: "10px" }}
-                onClick={() => {
-                  navigate("/practice");
-                }}
-              >
-                Practice
-              </Button>
-              <Button
-                variant="contained"
-                color="info"
-                onClick={() => {
-                  navigate("/room");
-                }}
-                sx={{ margin: "10px" }}
-              >
-                Create a room
-              </Button>
+            <Box className="card-wrapper">
+              <Box className="card-text">
+                <center>
+                  <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                    DuckyType - Practice ur typing speed!
+                  </Typography>
+                </center>
+              </Box>
+              <Box className="card-button">
+                <center>
+                  <Button
+                    variant="contained"
+                    sx={{ backgroundColor: "rgb(47, 46, 46)" }}
+                    onClick={() => {
+                      navigate("/practice");
+                    }}
+                  >
+                    Practice
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "rgb(47, 46, 46)",
+                      marginLeft: "10px",
+                    }}
+                    onClick={() => {
+                      navigate("/room");
+                    }}
+                  >
+                    Create a room
+                  </Button>
+                </center>
+              </Box>
             </Box>
           </Box>
+
           <Box className="div2">
             <center>
               <Typography variant="h4">Leaderboard</Typography>

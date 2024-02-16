@@ -7,21 +7,29 @@ import {
   Button,
   Box,
   Divider,
-  Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "../assets/logo.png";
 import duck from "../assets/duck.png";
 import { useNavigate } from "react-router-dom";
-import { auth, logout } from "../firebase";
+import { auth, getLoggedInUserData, logout } from "../firebase";
 const Layout = (props) => {
+  const getData = async (user) => {
+    try {
+      const result = await getLoggedInUserData(user);
+      setUser(result);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState({});
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      setUser(user);
+      getData(user);
     });
   }, []);
   console.log(user);
@@ -116,7 +124,9 @@ const Layout = (props) => {
                 )}
 
                 <Button className="nav-button">0 Races</Button>
-                {user && <Typography>{user.displayName}</Typography>}
+                {user && (
+                  <Button className="nav-button">{user.displayName}</Button>
+                )}
               </Box>
             )}
           </Toolbar>

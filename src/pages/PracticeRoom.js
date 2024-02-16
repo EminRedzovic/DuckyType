@@ -6,47 +6,43 @@ import { useEffect } from "react";
 
 const PracticeRoom = () => {
   const mock = [
-    "Do in laughter securing smallest sensible no mr hastened. As perhaps proceed in in brandon of limited unknown greatly. Distrusts fulfilled happiness unwilling as explained of difficult. No landlord of peculiar ladyship attended if contempt ecstatic. Loud wish made on is am as hard. Court so avoid in plate hence. Of received mr breeding concerns peculiar securing landlord. Spot to many it four bred soon well to. Or am promotion in no departure abilities.",
+    "make in laughter securing smallest sensible no mr hastened. As perhaps proceed in in brandon of limited unknown greatly. Distrusts fulfilled happiness unwilling as explained of difficult. No landlord of peculiar ladyship attended if contempt ecstatic. Loud wish made on is am as hard. Court so avoid in plate hence. Of received mr breeding concerns peculiar securing landlord. Spot to many it four bred soon well to. Or am promotion in no departure abilities.",
   ];
   const [words, setWords] = useState(50);
   const data2 = ["5", "10", "25", "50"];
   const text = mock[0].split(" ").slice(0, words);
   const [input, setInput] = useState("");
-  const [data, setData] = useState([0, 0]);
+  const [data, setData] = useState({ currentIndex: 0, correctCount: 0 });
   const [timer, setTimer] = useState(false);
   const [counter, setCounter] = useState(0);
+  const [startTime, setStartTime] = useState(null);
   useEffect(() => {
     if (timer === true) {
       const interval = setInterval(() => {
-        if (data[0] === text.length) {
-          clearInterval(interval);
-        } else {
-          setCounter((prevCounter) => prevCounter + 1);
-        }
+        setCounter((prevCounter) => prevCounter + 1);
       }, 1000);
       return () => clearInterval(interval);
     }
-    // eslint-disable-next-line
   }, [timer]);
   const handleReset = () => {
-    setData([0, 0]);
+    setData({ currentIndex: 0, correctCount: 0 });
     setTimer(false);
     setCounter(0);
+    setStartTime(null);
   };
   const handleSpace = (e) => {
-    if (e.keyCode === 32 && input.length >= 2) {
-      const textData = document.getElementById(data[0]);
-
-      if (text[data[0]] === input) {
-        textData.style.color = "white";
-        data[0] = data[0] + 1;
-        data[1]++;
-        setInput("");
-      } else {
-        textData.style.color = "red";
-        data[0] = data[0] + 1;
-        setInput("");
+    if (e.keyCode === 32 && input.trim() === text[data.currentIndex]) {
+      setData((prevData) => ({
+        currentIndex: prevData.currentIndex + 1,
+        correctCount: prevData.correctCount + 1,
+      }));
+      setInput("");
+      if (data.currentIndex + 1 === text.length) {
+        setTimer(false);
       }
+    } else if (!timer && data.currentIndex === 0) {
+      setStartTime(Date.now());
+      setTimer(true);
     }
   };
 
@@ -85,13 +81,13 @@ const PracticeRoom = () => {
           </Box>
         </Box>
         <Box className="main">
-          {data[0] === text.length ? (
+          {data.currentIndex === text.length ? (
             <>
               <center>
                 <Typography variant="h4">
-                  Wpm: {((60 / counter) * data[1]).toFixed(1)}
+                  Wpm: {((60 / counter) * data.correctCount).toFixed(1)}
                   <br />
-                  Accuracy: {((data[1] / words) * 100).toFixed(1)}%
+                  Accuracy: {((data.correctCount / words) * 100).toFixed(1)}%
                 </Typography>
                 <Button variant="outlined" onClick={handleReset}>
                   Reset
@@ -104,7 +100,20 @@ const PracticeRoom = () => {
             <Box>
               {text.map((item, index) => {
                 return (
-                  <span style={{ fontSize: "29px" }} id={index} key={index}>
+                  <span
+                    style={{
+                      fontSize: "29px",
+                      color:
+                        index < data.currentIndex
+                          ? "white"
+                          : index === data.currentIndex
+                          ? input.trim() === item
+                            ? "white"
+                            : "red"
+                          : "",
+                    }}
+                    key={index}
+                  >
                     {item + " "}
                   </span>
                 );
@@ -113,16 +122,16 @@ const PracticeRoom = () => {
           )}
         </Box>
         <Box className="inputBar">
-          {data[0] !== text.length && (
+          {data.currentIndex !== text.length && (
             <input
               value={input}
               className="input"
               placeholder="Type ur text here!"
               onChange={(event) => {
-                setInput(event.target.value.trim());
-                setTimer(true);
+                setInput(event.target.value);
               }}
               onKeyDown={handleSpace}
+              disabled={data.currentIndex === text.length}
             />
           )}
         </Box>
